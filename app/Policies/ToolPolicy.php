@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Tool;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Container\Attributes\Auth;
 
 class ToolPolicy
 {
