@@ -28,23 +28,33 @@ class PatientResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function getNameFormField(): TextInput
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required(),
-                DatePicker::make('date_of_birth')
+        return TextInput::make('name')
+                    ->required();
+    }
+
+    public static function getDOBFormField(): DatePicker
+    {
+        return DatePicker::make('date_of_birth')
                     ->required()
-                    ->maxDate(now()),
-                Select::make('type')
+                    ->maxDate(now());
+    }
+
+    public static function getTypeFormField(): Select
+    {
+        return Select::make('type')
                     ->required()
                     ->options([
                         'cat' => 'Cat',
                         'dog' => 'Dog',
                         'rabbit' => 'Rabbit',
-                    ]),
-                Select::make('owner_id')
+                    ]);
+    }
+
+    public static function getOwnerFormField(): Select
+    {
+        return Select::make('owner_id')
                     ->required()
                     ->label('Owner')
                     ->relationship('owner', 'name')
@@ -64,7 +74,17 @@ class PatientResource extends Resource
                             ->required()
                             ->tel()
                             ->maxLength(255),
-                    ]),
+                    ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                static::getNameFormField(),
+                static::getDOBFormField(),
+                static::getTypeFormField(),
+                static::getOwnerFormField(),
             ]);
     }
 
@@ -93,6 +113,7 @@ class PatientResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
